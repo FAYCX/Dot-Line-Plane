@@ -16,6 +16,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
+        background-color: black; 
+        color: white; 
       }
       #sketch-container {
         position: relative;
@@ -26,7 +28,7 @@
       }
       canvas {
         display: block;
-        margin-top: 20px; /* Adjust this value as needed */
+        margin-top: 20px; 
       }
       #controls {
         display: flex;
@@ -37,13 +39,16 @@
       .control {
         margin: 0 10px;
       }
+      label {
+        color: white; 
+      }
     </style>
   </head>
   <body>
     <main id="sketch-container">
       <div id="controls">
         <label class="control">Noise Scale:
-          <input type="range" id="noiseScaleSlider" min="0.01" max="0.1" step="0.01" value="0.01">
+          <input type="range" id="noiseScaleSlider" min="0.01" max="0.1" step="0.01" value="0.02">
         </label>
         <label class="control">Background Color:
           <input type="color" id="bgColorPicker" value="#000000">
@@ -54,7 +59,7 @@
       </div>
     </main>
     <script>
-      let noiseScale = 0.01;
+      let noiseScale = 0.02;
       let bgColor = '#000000';
       let circleColor = '#ffffff';
 
@@ -83,7 +88,7 @@
             let noiseFactor = noise(x * noiseScale, y * noiseScale, frameCount * 0.02);
             let h = map(noiseFactor, 0, 1, 0, 360);
             stroke(h, 80, 80);
-            fill(circleColor);
+            fill(circleColor); 
             drawCircle(x, y, noiseFactor);
           }
         }
@@ -98,3 +103,4 @@
     </script>
   </body>
 </html>
+
