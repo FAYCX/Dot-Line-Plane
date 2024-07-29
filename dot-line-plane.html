@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Noise Visualization</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+      }
+      #sketch-container {
+        position: relative;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      canvas {
+        display: block;
+        margin-top: 20px; /* Adjust this value as needed */
+      }
+      #controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+      }
+      .control {
+        margin: 0 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="sketch-container">
+      <div id="controls">
+        <label class="control">Noise Scale:
+          <input type="range" id="noiseScaleSlider" min="0.01" max="0.1" step="0.01" value="0.01">
+        </label>
+        <label class="control">Background Color:
+          <input type="color" id="bgColorPicker" value="#000000">
+        </label>
+        <label class="control">Circle Color:
+          <input type="color" id="circleColorPicker" value="#ffffff">
+        </label>
+      </div>
+    </main>
+    <script>
+      let noiseScale = 0.01;
+      let bgColor = '#000000';
+      let circleColor = '#ffffff';
+
+      function setup() {
+        let canvas = createCanvas(600, 600);
+        canvas.parent('sketch-container');
+        colorMode(HSB, 360, 100, 100);
+
+        // Slider and color picker elements
+        let noiseScaleSlider = select('#noiseScaleSlider');
+        noiseScaleSlider.input(() => noiseScale = noiseScaleSlider.value());
+
+        let bgColorPicker = select('#bgColorPicker');
+        bgColorPicker.input(() => bgColor = bgColorPicker.value());
+
+        let circleColorPicker = select('#circleColorPicker');
+        circleColorPicker.input(() => circleColor = circleColorPicker.value());
+      }
+
+      function draw() {
+        background(bgColor);
+        translate(width / 2, height / 2);
+
+        for (let y = -height / 8; y <= height / 8; y += 2) {
+          for (let x = -width / 8; x <= width / 8; x += 2) {
+            let noiseFactor = noise(x * noiseScale, y * noiseScale, frameCount * 0.02);
+            let h = map(noiseFactor, 0, 1, 0, 360);
+            stroke(h, 80, 80);
+            fill(circleColor);
+            drawCircle(x, y, noiseFactor);
+          }
+        }
+      }
+
+      function drawCircle(NX, NY, NN) {
+        push();
+        translate(NX * NN * 4, NY * NN * 4);
+        circle(0, 0, NN * 3);
+        pop();
+      }
+    </script>
+  </body>
+</html>
